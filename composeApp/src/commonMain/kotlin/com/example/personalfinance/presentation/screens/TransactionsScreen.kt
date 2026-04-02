@@ -3,6 +3,7 @@ package com.example.personalfinance.presentation.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,6 +29,8 @@ import com.example.personalfinance.theme.FinanceCard
 import com.example.personalfinance.theme.FinanceTextPrimary
 import com.example.personalfinance.theme.FinanceTextSecondary
 
+private val TransactionsScreenContentPadding = PaddingValues(start = 16.dp, top = 20.dp, end = 16.dp, bottom = 28.dp)
+
 @Composable
 fun TransactionsScreen(
     state: FinanceUiState,
@@ -40,13 +43,12 @@ fun TransactionsScreen(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(FinanceBackground)
-            .padding(horizontal = 16.dp),
+            .background(FinanceBackground),
+        contentPadding = TransactionsScreenContentPadding,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         item {
             Column(
-                modifier = Modifier.padding(top = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 SectionTitle("Transactions", "Manage entries")

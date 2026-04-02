@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,8 @@ import com.example.personalfinance.theme.FinanceChartBlue
 import com.example.personalfinance.theme.FinanceChartGreen
 import com.example.personalfinance.theme.FinanceChartPink
 
+private val HomeScreenContentPadding = PaddingValues(bottom = 28.dp)
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HomeScreen(
@@ -38,6 +41,7 @@ fun HomeScreen(
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
+        contentPadding = HomeScreenContentPadding,
         verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {
         item {

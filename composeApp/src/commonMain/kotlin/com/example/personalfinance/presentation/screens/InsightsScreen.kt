@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.personalfinance.presentation.FinanceUiState
@@ -30,6 +32,8 @@ import com.example.personalfinance.theme.FinanceCard
 import com.example.personalfinance.theme.FinanceTextPrimary
 import com.example.personalfinance.theme.FinanceTextSecondary
 
+private val InsightsScreenContentPadding = PaddingValues(start = 16.dp, top = 20.dp, end = 16.dp, bottom = 28.dp)
+
 @Composable
 fun InsightsScreen(
     state: FinanceUiState,
@@ -38,13 +42,12 @@ fun InsightsScreen(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(FinanceBackground)
-            .padding(horizontal = 16.dp),
+            .background(FinanceBackground),
+        contentPadding = InsightsScreenContentPadding,
         verticalArrangement = Arrangement.spacedBy(18.dp),
     ) {
         item {
             Column(
-                modifier = Modifier.padding(top = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp),
             ) {
                 SectionTitle("Insights", "Simple patterns")
@@ -66,7 +69,7 @@ fun InsightsScreen(
         item {
             Card(
                 shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.White),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
             ) {
                 Column(
                     modifier = Modifier.padding(18.dp),
@@ -87,7 +90,7 @@ fun InsightsScreen(
                                     .fillMaxWidth()
                                     .height(10.dp)
                                     .clip(RoundedCornerShape(50))
-                                    .background(androidx.compose.ui.graphics.Color(0xFFF1EEFF)),
+                                    .background(Color(0xFFF1EEFF)),
                             ) {
                                 Box(
                                     modifier = Modifier
@@ -135,7 +138,7 @@ private fun InsightSummaryCard(
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.White),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
     ) {
         Column(
             modifier = Modifier.padding(16.dp),

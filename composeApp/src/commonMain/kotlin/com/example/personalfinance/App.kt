@@ -2,6 +2,7 @@ package com.example.personalfinance
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -95,28 +97,25 @@ private fun FinanceContent(
             }
         },
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .background(MaterialTheme.colorScheme.background),
         ) {
-            if (state is FinanceViewState.Error) {
-                ErrorBanner(
-                    message = state.message,
-                    onDismiss = { onEvent(FinanceEvent.DismissTransactionEditor) },
-                )
-            }
-
             when (uiState.selectedTab) {
                 FinanceTab.Home -> HomeScreen(
                     state = uiState,
-                    modifier = Modifier.background(MaterialTheme.colorScheme.background),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
                     onOpenTransactions = { onEvent(FinanceEvent.SelectTab(FinanceTab.Transactions)) },
                 )
                 FinanceTab.Transactions -> TransactionsScreen(
                     state = uiState,
-                    modifier = Modifier.background(MaterialTheme.colorScheme.background),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
                     onSearchChange = { onEvent(FinanceEvent.UpdateSearchQuery(it)) },
                     onFilterSelected = { onEvent(FinanceEvent.UpdateFilter(it)) },
                     onEditTransaction = { onEvent(FinanceEvent.StartEditTransaction(it)) },
@@ -124,11 +123,25 @@ private fun FinanceContent(
                 )
                 FinanceTab.Goals -> GoalsScreen(
                     state = uiState,
-                    modifier = Modifier.background(MaterialTheme.colorScheme.background),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
                 )
                 FinanceTab.Insights -> InsightsScreen(
                     state = uiState,
-                    modifier = Modifier.background(MaterialTheme.colorScheme.background),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
+                )
+            }
+
+            if (state is FinanceViewState.Error) {
+                ErrorBanner(
+                    message = state.message,
+                    onDismiss = { onEvent(FinanceEvent.DismissTransactionEditor) },
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(top = 12.dp),
                 )
             }
         }
@@ -147,10 +160,11 @@ private fun FinanceContent(
 private fun ErrorBanner(
     message: String,
     onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 12.dp)
+        modifier = modifier
+            .padding(horizontal = 16.dp)
             .background(Color(0xFFFFF1F4)),
     ) {
         Text(

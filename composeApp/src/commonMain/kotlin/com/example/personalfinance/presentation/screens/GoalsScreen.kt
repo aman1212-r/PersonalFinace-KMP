@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,6 +29,8 @@ import com.example.personalfinance.presentation.formatCurrency
 import com.example.personalfinance.theme.FinanceTextPrimary
 import com.example.personalfinance.theme.FinanceTextSecondary
 
+private val GoalsScreenContentPadding = PaddingValues(bottom = 28.dp)
+
 @Composable
 fun GoalsScreen(
     state: FinanceUiState,
@@ -35,6 +38,7 @@ fun GoalsScreen(
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
+        contentPadding = GoalsScreenContentPadding,
         verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {
         item {

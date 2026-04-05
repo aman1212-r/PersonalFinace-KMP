@@ -50,6 +50,7 @@ fun HomeScreen(
                 subtitle = "A clear snapshot of your month",
                 amount = formatCurrency(state.summary.balance),
                 trailing = "April",
+                extendIntoStatusBar = true,
             ) {
                 TrendLineChart(
                     points = listOf(30f, 55f, 44f, 76f, 68f, 88f, 71f),

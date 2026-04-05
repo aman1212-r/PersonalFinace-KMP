@@ -29,7 +29,6 @@ import com.example.personalfinance.data.model.Transaction
 import com.example.personalfinance.data.model.TransactionDraft
 import com.example.personalfinance.data.model.TransactionType
 import com.example.personalfinance.theme.FinanceChartPink
-import com.example.personalfinance.theme.FinancePurpleEnd
 import com.example.personalfinance.theme.FinanceSurfaceMuted
 import com.example.personalfinance.theme.FinanceTextSecondary
 
@@ -102,21 +101,13 @@ fun TransactionEditorDialog(
                 )
 
                 Text("Type", color = FinanceTextSecondary)
-                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    listOf(TransactionType.Expense, TransactionType.Income).forEach { item ->
-                        Surface(
-                            modifier = Modifier.clickable { type = item },
-                            shape = RoundedCornerShape(16.dp),
-                            color = if (type == item) FinancePurpleEnd else FinanceSurfaceMuted,
-                        ) {
-                            Text(
-                                text = item.name,
-                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
-                                color = if (type == item) Color.White else FinanceTextSecondary,
-                            )
-                        }
-                    }
-                }
+                PlatformSegmentedSelector(
+                    options = listOf("Expense", "Income"),
+                    selectedIndex = if (type == TransactionType.Expense) 0 else 1,
+                    onSelectedIndexChange = { index ->
+                        type = if (index == 0) TransactionType.Expense else TransactionType.Income
+                    },
+                )
 
                 Text("Category", color = FinanceTextSecondary)
                 Row(

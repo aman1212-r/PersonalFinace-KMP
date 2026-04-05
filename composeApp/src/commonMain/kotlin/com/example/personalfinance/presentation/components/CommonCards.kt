@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.personalfinance.theme.FinanceCard
 import com.example.personalfinance.theme.FinanceTextPrimary
@@ -34,9 +35,21 @@ fun SectionTitle(
             text = title,
             color = FinanceTextPrimary,
             style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(1f),
         )
-        subtitle?.let { Text(text = it, color = FinanceTextSecondary) }
+        subtitle?.let {
+            Text(
+                text = it,
+                color = FinanceTextSecondary,
+                style = MaterialTheme.typography.labelMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(start = 12.dp),
+            )
+        }
     }
 }
 
@@ -59,13 +72,19 @@ fun EmptyStateCard(
             Text(
                 text = title,
                 color = FinanceTextPrimary,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
             Text(
                 text = description,
                 color = FinanceTextSecondary,
+                style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }

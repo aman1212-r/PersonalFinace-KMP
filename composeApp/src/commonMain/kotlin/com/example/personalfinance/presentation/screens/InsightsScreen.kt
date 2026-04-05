@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.personalfinance.presentation.FinanceUiState
 import com.example.personalfinance.presentation.InsightCard
@@ -82,8 +83,23 @@ fun InsightsScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                             ) {
-                                Text(item.category.title, color = FinanceTextPrimary, fontWeight = FontWeight.SemiBold)
-                                Text(formatCurrency(item.amount), color = FinanceTextSecondary)
+                                Text(
+                                    text = item.category.title,
+                                    color = FinanceTextPrimary,
+                                    fontWeight = FontWeight.SemiBold,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier.weight(1f),
+                                )
+                                Text(
+                                    text = formatCurrency(item.amount),
+                                    color = FinanceTextSecondary,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier.padding(start = 12.dp),
+                                )
                             }
                             Box(
                                 modifier = Modifier
@@ -118,11 +134,17 @@ fun InsightsScreen(
                     Text(
                         text = "Why this screen matters",
                         color = FinanceTextPrimary,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                     Text(
                         text = "The screen keeps insights compact and readable on mobile while making patterns visible without heavy analytics.",
                         color = FinanceTextSecondary,
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }
@@ -147,16 +169,24 @@ private fun InsightSummaryCard(
             Text(
                 text = insight.title,
                 color = FinanceTextSecondary,
+                style = MaterialTheme.typography.labelMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
             Text(
                 text = insight.value,
                 color = FinanceTextPrimary,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
             Text(
                 text = insight.description,
                 color = FinanceTextSecondary,
+                style = MaterialTheme.typography.bodySmall,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }

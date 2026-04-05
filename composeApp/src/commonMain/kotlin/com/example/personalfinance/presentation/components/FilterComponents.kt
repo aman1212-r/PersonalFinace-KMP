@@ -5,9 +5,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.unit.dp
 import com.example.personalfinance.presentation.TransactionFilter
+import com.example.personalfinance.theme.FinanceRadius
+import com.example.personalfinance.theme.financeFieldColors
 
 @Composable
 fun SearchField(
@@ -18,7 +18,8 @@ fun SearchField(
         value = query,
         onValueChange = onQueryChange,
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = FinanceRadius.medium,
+        colors = financeFieldColors(),
         placeholder = { Text("Search transactions") },
         singleLine = true,
     )
@@ -30,7 +31,7 @@ fun FilterChips(
     onFilterSelected: (TransactionFilter) -> Unit,
 ) {
     val filters = TransactionFilter.entries
-    PlatformSegmentedSelector(
+    FinanceSegmentedControl(
         options = filters.map { it.title },
         selectedIndex = filters.indexOf(selectedFilter),
         onSelectedIndexChange = { onFilterSelected(filters[it]) },

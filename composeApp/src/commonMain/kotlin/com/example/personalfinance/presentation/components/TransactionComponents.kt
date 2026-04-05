@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.personalfinance.data.model.FinanceCategory
 import com.example.personalfinance.data.model.Transaction
@@ -57,31 +58,45 @@ fun TransactionRow(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 CategoryBadge(category = transaction.category)
-                Column {
+                Column(modifier = Modifier.fillMaxWidth(0.62f)) {
                     Text(
                         text = transaction.title,
                         color = FinanceTextPrimary,
                         fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.bodyLarge,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                     Text(
                         text = "${transaction.category.title} • ${transaction.date}",
                         color = FinanceTextSecondary,
+                        style = MaterialTheme.typography.bodySmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                     if (transaction.note.isNotBlank()) {
                         Text(
                             text = transaction.note,
                             color = FinanceTextSecondary,
                             style = MaterialTheme.typography.bodySmall,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 }
             }
 
-            Column(horizontalAlignment = Alignment.End) {
+            Column(
+                modifier = Modifier.padding(start = 12.dp),
+                horizontalAlignment = Alignment.End,
+            ) {
                 Text(
                     text = (if (transaction.type == TransactionType.Income) "+" else "-") + formatCurrency(transaction.amount),
                     color = if (transaction.type == TransactionType.Income) FinanceChartGreen else FinanceTextPrimary,
                     fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Clip,
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Text(

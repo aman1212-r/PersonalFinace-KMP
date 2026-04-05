@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.personalfinance.data.model.FinanceCategory
 import com.example.personalfinance.data.model.Transaction
+import com.example.personalfinance.data.model.TransactionType
 import com.example.personalfinance.data.repository.FinanceRepository
 
 class FinanceViewModel(
@@ -26,7 +27,7 @@ class FinanceViewModel(
         runCatching {
             when (event) {
                 is FinanceEvent.SaveTransaction -> handleSaveTransaction(event)
-                is FinanceEvent.DeleteTransaction -> handleDeleteTransaction(event)
+                FinanceEvent.ConfirmDeleteTransaction -> handleConfirmDeleteTransaction()
                 else -> {
                     machineContext = reduceFinanceContext(machineContext, event)
                     publishReadyState()
@@ -59,9 +60,10 @@ class FinanceViewModel(
         publishReadyState()
     }
 
-    private fun handleDeleteTransaction(event: FinanceEvent.DeleteTransaction) {
-        repository.deleteTransaction(event.transaction.id)
-        machineContext = reduceFinanceContext(machineContext, event)
+    private fun handleConfirmDeleteTransaction() {
+        val transaction = machineContext.deleteConfirmation.transaction ?: return
+        repository.deleteTransaction(transaction.id)
+        machineContext = reduceFinanceContext(machineContext, FinanceEvent.ConfirmDeleteTransaction)
         publishReadyState()
     }
 
@@ -78,8 +80,8 @@ class FinanceViewModel(
     private fun buildUiState(): FinanceUiState {
         val transactions = repository.getTransactions()
         val goal = repository.getSavingsGoal()
-        val income = transactions.filter { it.type == com.example.personalfinance.data.model.TransactionType.Income }.sumOf { it.amount }
-        val expenses = transactions.filter { it.type == com.example.personalfinance.data.model.TransactionType.Expense }.sumOf { it.amount }
+        val income = transactions.filter { it.type == TransactionType.Income }.sumOf { it.amount }
+        val expenses = transactions.filter { it.type == TransactionType.Expense }.sumOf { it.amount }
         val balance = income - expenses
         val savingsProgress = (goal.currentAmount / goal.targetAmount).toFloat().coerceIn(0f, 1f)
 
@@ -88,7 +90,7 @@ class FinanceViewModel(
                 matchesTransactionSearch(transaction, machineContext.searchQuery)
         }
 
-        val expenseTransactions = transactions.filter { it.type == com.example.personalfinance.data.model.TransactionType.Expense }
+        val expenseTransactions = transactions.filter { it.type == TransactionType.Expense }
         val totalExpense = expenseTransactions.sumOf { it.amount }.takeIf { it > 0 } ?: 1.0
         val categoryBreakdown = expenseTransactions
             .groupBy { it.category }
@@ -149,6 +151,7 @@ class FinanceViewModel(
             selectedFilter = machineContext.selectedFilter,
             selectedTab = machineContext.selectedTab,
             transactionEditor = machineContext.transactionEditor,
+            deleteConfirmation = machineContext.deleteConfirmation,
         )
     }
 

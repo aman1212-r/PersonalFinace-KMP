@@ -44,6 +44,12 @@ data class InsightCard(
     val description: String,
 )
 
+data class DeleteConfirmationState(
+    val transaction: Transaction? = null,
+) {
+    val isVisible: Boolean get() = transaction != null
+}
+
 data class FinanceUiState(
     val summary: FinanceSummary,
     val goal: SavingsGoal,
@@ -56,6 +62,7 @@ data class FinanceUiState(
     val selectedFilter: TransactionFilter,
     val selectedTab: FinanceTab,
     val transactionEditor: TransactionEditorState,
+    val deleteConfirmation: DeleteConfirmationState,
 )
 
 fun TransactionFilter.matches(type: TransactionType): Boolean = when (this) {

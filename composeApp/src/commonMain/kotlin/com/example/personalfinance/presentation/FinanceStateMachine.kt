@@ -18,6 +18,7 @@ internal data class FinanceMachineContext(
     val searchQuery: String = "",
     val selectedFilter: TransactionFilter = TransactionFilter.All,
     val transactionEditor: TransactionEditorState = TransactionEditorState(),
+    val deleteConfirmation: DeleteConfirmationState = DeleteConfirmationState(),
 )
 
 internal fun reduceFinanceContext(
@@ -31,12 +32,18 @@ internal fun reduceFinanceContext(
         } else {
             TransactionEditorState()
         },
+        deleteConfirmation = if (event.tab == FinanceTab.Transactions) {
+            context.deleteConfirmation
+        } else {
+            DeleteConfirmationState()
+        },
     )
     is FinanceEvent.UpdateSearchQuery -> context.copy(searchQuery = event.query)
     is FinanceEvent.UpdateFilter -> context.copy(selectedFilter = event.filter)
     is FinanceEvent.StartAddTransaction -> context.copy(
         selectedTab = FinanceTab.Transactions,
         transactionEditor = TransactionEditorState(isVisible = true),
+        deleteConfirmation = DeleteConfirmationState(),
     )
     is FinanceEvent.StartEditTransaction -> context.copy(
         selectedTab = FinanceTab.Transactions,
@@ -44,6 +51,7 @@ internal fun reduceFinanceContext(
             isVisible = true,
             transaction = event.transaction,
         ),
+        deleteConfirmation = DeleteConfirmationState(),
     )
     is FinanceEvent.DismissTransactionEditor -> context.copy(
         transactionEditor = TransactionEditorState(),
@@ -51,5 +59,15 @@ internal fun reduceFinanceContext(
     is FinanceEvent.SaveTransaction -> context.copy(
         transactionEditor = TransactionEditorState(),
     )
-    is FinanceEvent.DeleteTransaction -> context
+    is FinanceEvent.RequestDeleteTransaction -> context.copy(
+        selectedTab = FinanceTab.Transactions,
+        transactionEditor = TransactionEditorState(),
+        deleteConfirmation = DeleteConfirmationState(transaction = event.transaction),
+    )
+    FinanceEvent.ConfirmDeleteTransaction -> context.copy(
+        deleteConfirmation = DeleteConfirmationState(),
+    )
+    FinanceEvent.DismissDeleteConfirmation -> context.copy(
+        deleteConfirmation = DeleteConfirmationState(),
+    )
 }

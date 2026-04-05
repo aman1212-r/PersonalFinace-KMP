@@ -5,6 +5,7 @@ import com.example.personalfinance.data.model.SavingsGoal
 import com.example.personalfinance.data.model.Transaction
 import com.example.personalfinance.data.model.TransactionDraft
 import com.example.personalfinance.data.model.TransactionType
+import com.example.personalfinance.presentation.parseAmountOrNull
 
 class InMemoryFinanceRepository : FinanceRepository {
     private val transactions = mutableListOf(
@@ -53,7 +54,7 @@ class InMemoryFinanceRepository : FinanceRepository {
 private fun TransactionDraft.toTransaction(id: String): Transaction = Transaction(
     id = id,
     title = title.trim(),
-    amount = amount.toDouble(),
+    amount = parseAmountOrNull(amount) ?: 0.0,
     type = type,
     category = category,
     date = date.trim(),

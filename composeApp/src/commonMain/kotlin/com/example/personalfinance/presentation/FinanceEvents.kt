@@ -11,5 +11,7 @@ sealed interface FinanceEvent {
     data class StartEditTransaction(val transaction: Transaction) : FinanceEvent
     data object DismissTransactionEditor : FinanceEvent
     data class SaveTransaction(val draft: TransactionDraft) : FinanceEvent
-    data class DeleteTransaction(val transaction: Transaction) : FinanceEvent
+    data class RequestDeleteTransaction(val transaction: Transaction) : FinanceEvent
+    data object ConfirmDeleteTransaction : FinanceEvent
+    data object DismissDeleteConfirmation : FinanceEvent
 }

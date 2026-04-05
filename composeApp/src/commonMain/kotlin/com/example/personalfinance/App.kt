@@ -23,6 +23,7 @@ import com.example.personalfinance.presentation.FinanceTab
 import com.example.personalfinance.presentation.FinanceViewModel
 import com.example.personalfinance.presentation.FinanceViewState
 import com.example.personalfinance.presentation.components.FinanceBottomBar
+import com.example.personalfinance.presentation.components.PlatformDeleteConfirmationDialog
 import com.example.personalfinance.presentation.components.TransactionEditorDialog
 import com.example.personalfinance.presentation.screens.GoalsScreen
 import com.example.personalfinance.presentation.screens.HomeScreen
@@ -119,7 +120,7 @@ private fun FinanceContent(
                     onSearchChange = { onEvent(FinanceEvent.UpdateSearchQuery(it)) },
                     onFilterSelected = { onEvent(FinanceEvent.UpdateFilter(it)) },
                     onEditTransaction = { onEvent(FinanceEvent.StartEditTransaction(it)) },
-                    onDeleteTransaction = { onEvent(FinanceEvent.DeleteTransaction(it)) },
+                    onDeleteTransaction = { onEvent(FinanceEvent.RequestDeleteTransaction(it)) },
                 )
                 FinanceTab.Goals -> GoalsScreen(
                     state = uiState,
@@ -154,6 +155,17 @@ private fun FinanceContent(
         visible = uiState.transactionEditor.isVisible,
         errorMessage = if (state is FinanceViewState.Error) state.message else null,
     )
+
+    uiState.deleteConfirmation.transaction?.let { transaction ->
+        PlatformDeleteConfirmationDialog(
+            title = "Delete transaction?",
+            message = "Delete ${transaction.title} permanently?",
+            confirmText = "Yes",
+            dismissText = "No",
+            onConfirm = { onEvent(FinanceEvent.ConfirmDeleteTransaction) },
+            onDismiss = { onEvent(FinanceEvent.DismissDeleteConfirmation) },
+        )
+    }
 }
 
 @Composable

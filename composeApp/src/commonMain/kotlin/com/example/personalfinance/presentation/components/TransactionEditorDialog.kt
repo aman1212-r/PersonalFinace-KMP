@@ -3,14 +3,19 @@ package com.example.personalfinance.presentation.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -29,8 +34,10 @@ import com.example.personalfinance.data.model.Transaction
 import com.example.personalfinance.data.model.TransactionDraft
 import com.example.personalfinance.data.model.TransactionType
 import com.example.personalfinance.theme.FinanceChartPink
+import com.example.personalfinance.theme.FinanceRadius
 import com.example.personalfinance.theme.FinanceSurfaceMuted
 import com.example.personalfinance.theme.FinanceTextSecondary
+import com.example.personalfinance.theme.financeFieldColors
 
 @Composable
 fun TransactionEditorDialog(
@@ -48,6 +55,19 @@ fun TransactionEditorDialog(
     var note by remember(initialTransaction) { mutableStateOf(initialTransaction?.note.orEmpty()) }
     var type by remember(initialTransaction) { mutableStateOf(initialTransaction?.type ?: TransactionType.Expense) }
     var category by remember(initialTransaction) { mutableStateOf(initialTransaction?.category ?: FinanceCategory.Food) }
+    var showDatePicker by remember { mutableStateOf(false) }
+
+    if (showDatePicker) {
+        PlatformTransactionDatePicker(
+            initialDate = date,
+            onDismiss = { showDatePicker = false },
+            onDateSelected = {
+                date = it
+                showDatePicker = false
+            },
+        )
+        return
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -86,22 +106,46 @@ fun TransactionEditorDialog(
                     onValueChange = { title = it },
                     label = { Text("Title") },
                     singleLine = true,
+                    shape = FinanceRadius.medium,
+                    colors = financeFieldColors(),
+                    modifier = Modifier.fillMaxWidth(),
                 )
                 OutlinedTextField(
                     value = amount,
                     onValueChange = { amount = it },
                     label = { Text("Amount") },
                     singleLine = true,
+                    shape = FinanceRadius.medium,
+                    colors = financeFieldColors(),
+                    modifier = Modifier.fillMaxWidth(),
                 )
-                OutlinedTextField(
-                    value = date,
-                    onValueChange = { date = it },
-                    label = { Text("Date (YYYY-MM-DD)") },
-                    singleLine = true,
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { showDatePicker = true },
+                ) {
+                    OutlinedTextField(
+                        value = date,
+                        onValueChange = {},
+                        label = { Text("Date") },
+                        singleLine = true,
+                        readOnly = true,
+                        enabled = false,
+                        shape = FinanceRadius.medium,
+                        colors = financeFieldColors(),
+                        modifier = Modifier.fillMaxWidth(),
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Outlined.CalendarMonth,
+                                contentDescription = "Pick date",
+                                tint = FinanceTextSecondary,
+                            )
+                        },
+                    )
+                }
 
                 Text("Type", color = FinanceTextSecondary)
-                PlatformSegmentedSelector(
+                FinanceSegmentedControl(
                     options = listOf("Expense", "Income"),
                     selectedIndex = if (type == TransactionType.Expense) 0 else 1,
                     onSelectedIndexChange = { index ->
@@ -133,6 +177,9 @@ fun TransactionEditorDialog(
                     value = note,
                     onValueChange = { note = it },
                     label = { Text("Notes") },
+                    shape = FinanceRadius.medium,
+                    colors = financeFieldColors(),
+                    modifier = Modifier.fillMaxWidth(),
                 )
 
                 errorMessage?.let {

@@ -51,7 +51,7 @@ fun TransactionEditorDialog(
 
     var title by remember(initialTransaction) { mutableStateOf(initialTransaction?.title.orEmpty()) }
     var amount by remember(initialTransaction) { mutableStateOf(initialTransaction?.amount?.toString().orEmpty()) }
-    var date by remember(initialTransaction) { mutableStateOf(initialTransaction?.date ?: "2026-04-07") }
+    var date by remember(initialTransaction) { mutableStateOf(initialTransaction?.date ?: " ") }
     var note by remember(initialTransaction) { mutableStateOf(initialTransaction?.note.orEmpty()) }
     var type by remember(initialTransaction) { mutableStateOf(initialTransaction?.type ?: TransactionType.Expense) }
     var category by remember(initialTransaction) { mutableStateOf(initialTransaction?.category ?: FinanceCategory.Food) }

@@ -1,5 +1,6 @@
 package com.example.personalfinance.presentation.components
 
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -27,15 +28,8 @@ import platform.UIKit.UILabel
 import platform.UIKit.UIModalPresentationOverFullScreen
 import platform.UIKit.UIView
 import platform.UIKit.UIViewController
-import platform.UIKit.bottomAnchor
-import platform.UIKit.centerXAnchor
-import platform.UIKit.heightAnchor
-import platform.UIKit.layoutMarginsGuide
-import platform.UIKit.leadingAnchor
-import platform.UIKit.safeAreaLayoutGuide
-import platform.UIKit.topAnchor
-import platform.UIKit.trailingAnchor
 import platform.darwin.NSObject
+
 
 @OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
 @Composable
@@ -68,6 +62,7 @@ actual fun PlatformTransactionDatePicker(
             return@LaunchedEffect
         }
 
+
         val controller = buildPickerController(
             initialDate = initialDate,
             formatter = formatter,
@@ -96,11 +91,13 @@ private fun buildPickerController(
         view.backgroundColor = UIColor.clearColor
     }
 
+
     val dimView = UIControl().apply {
         backgroundColor = UIColor.blackColor.colorWithAlphaComponent(0.24)
         translatesAutoresizingMaskIntoConstraints = false
         addTarget(callback, action = NSSelectorFromString("onCancel"), forControlEvents = UIControlEventTouchUpInside)
     }
+
 
     val sheetView = UIView().apply {
         backgroundColor = UIColor.whiteColor
@@ -109,6 +106,7 @@ private fun buildPickerController(
         layer.masksToBounds = true
     }
 
+
     val titleLabel = UILabel().apply {
         text = "Select date"
         font = UIFont.boldSystemFontOfSize(17.0)
@@ -116,11 +114,13 @@ private fun buildPickerController(
         translatesAutoresizingMaskIntoConstraints = false
     }
 
+
     val cancelButton = UIButton.buttonWithType(UIButtonTypeSystem).apply {
         setTitle("Cancel", forState = 0u)
         translatesAutoresizingMaskIntoConstraints = false
         addTarget(callback, action = NSSelectorFromString("onCancel"), forControlEvents = UIControlEventTouchUpInside)
     }
+
 
     val doneButton = UIButton.buttonWithType(UIButtonTypeSystem).apply {
         setTitle("Done", forState = 0u)
@@ -128,6 +128,7 @@ private fun buildPickerController(
         translatesAutoresizingMaskIntoConstraints = false
         addTarget(callback, action = NSSelectorFromString("onDone"), forControlEvents = UIControlEventTouchUpInside)
     }
+
 
     val datePicker = UIDatePicker().apply {
         datePickerMode = UIDatePickerMode.UIDatePickerModeDate
